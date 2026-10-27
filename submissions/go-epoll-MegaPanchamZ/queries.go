@@ -99,7 +99,6 @@ const sqlArticleMetaCols = `
     SELECT (SELECT t.name FROM tags t WHERE t.id = at.tag_id)
     FROM article_tags at
     WHERE at.article_id = a.id
-    ORDER BY 1
   ) AS tags,
   (SELECT count(*) FROM favorites f WHERE f.article_id = a.id) AS favorites_count,
   ($1::bigint <> 0 AND EXISTS (
@@ -119,7 +118,6 @@ const sqlFeedMetaCols = `
     SELECT (SELECT t.name FROM tags t WHERE t.id = at.tag_id)
     FROM article_tags at
     WHERE at.article_id = a.id
-    ORDER BY 1
   ) AS tags,
   (SELECT count(*) FROM favorites f WHERE f.article_id = a.id) AS favorites_count,
   EXISTS (
@@ -348,7 +346,6 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		   ARRAY(
 		     SELECT (SELECT t.name FROM tags t WHERE t.id = at.tag_id)
 		     FROM article_tags at WHERE at.article_id = a.id
-		     ORDER BY 1
 		   ) AS tags,
 		   (SELECT count(*) FROM favorites f WHERE f.article_id = a.id)
 		     + (SELECT count(*) FROM ins) AS favorites_count,
@@ -377,7 +374,6 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		   ARRAY(
 		     SELECT (SELECT t.name FROM tags t WHERE t.id = at.tag_id)
 		     FROM article_tags at WHERE at.article_id = a.id
-		     ORDER BY 1
 		   ) AS tags,
 		   GREATEST(
 		     (SELECT count(*) FROM favorites f WHERE f.article_id = a.id)
@@ -460,7 +456,6 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		   CASE WHEN a.id IS NULL THEN NULL ELSE ARRAY(
 		     SELECT (SELECT t.name FROM tags t WHERE t.id = at.tag_id)
 		     FROM article_tags at WHERE at.article_id = a.id
-		     ORDER BY 1
 		   ) END AS tags,
 		   CASE WHEN a.id IS NULL THEN NULL
 		        ELSE (SELECT count(*) FROM favorites f WHERE f.article_id = a.id)
@@ -592,7 +587,6 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		            SELECT (SELECT names FROM tmap)[at.tag_id]
 		            FROM article_tags at
 		            WHERE at.article_id = a.id
-		            ORDER BY 1
 		          ) AS tags,
 		          (SELECT count(*) FROM favorites f WHERE f.article_id = a.id) AS favorites_count,
 		          u.username, u.bio, u.image
@@ -662,7 +656,6 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		            SELECT (SELECT names FROM tmap)[at.tag_id]
 		            FROM article_tags at
 		            WHERE at.article_id = a.id
-		            ORDER BY 1
 		          ) AS tags,
 		          (SELECT count(*) FROM favorites f WHERE f.article_id = a.id) AS favorites_count,
 		          u.username, u.bio, u.image
@@ -736,7 +729,6 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		              SELECT (SELECT names FROM tmap)[at.tag_id]
 		              FROM article_tags at
 		              WHERE at.article_id = a.id
-		              ORDER BY 1
 		            ) AS tags,
 		            (SELECT count(*) FROM favorites f WHERE f.article_id = a.id) AS favorites_count,
 		            u.username, u.bio, u.image
@@ -787,7 +779,6 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		            SELECT (SELECT names FROM tmap)[at.tag_id]
 		            FROM article_tags at
 		            WHERE at.article_id = a.id
-		            ORDER BY 1
 		          ) AS tags,
 		          (SELECT count(*) FROM favorites f WHERE f.article_id = a.id) AS favorites_count
 		   FROM (
@@ -854,7 +845,6 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		              SELECT (SELECT names FROM tmap)[at.tag_id]
 		              FROM article_tags at
 		              WHERE at.article_id = a.id
-		              ORDER BY 1
 		            ) AS tags,
 		            (SELECT count(*) FROM favorites f WHERE f.article_id = a.id) AS favorites_count,
 		            u.username, u.bio, u.image
@@ -889,7 +879,7 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		     GROUP BY fo.fid
 		     HAVING count(*) >= 2
 		     ORDER BY count(*) DESC
-		     LIMIT 24
+		     LIMIT 16
 		   ) d
 		   WHERE EXISTS (
 		     SELECT 1 FROM articles a
@@ -952,7 +942,6 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		            SELECT (SELECT names FROM tmap)[at.tag_id]
 		            FROM article_tags at
 		            WHERE at.article_id = a.id
-		            ORDER BY 1
 		          ) AS tags,
 		          (SELECT count(*) FROM favorites f WHERE f.article_id = a.id) AS favorites_count
 		   FROM articles a
@@ -1024,7 +1013,6 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		          ARRAY(
 		            SELECT (SELECT names FROM tmap)[at.tag_id]
 		            FROM article_tags at WHERE at.article_id = a.id
-		            ORDER BY 1
 		          ) AS tags,
 		          (SELECT count(*) FROM favorites f WHERE f.article_id = a.id) AS base_favs,
 		          u.username, u.bio, u.image
@@ -1072,7 +1060,6 @@ var sqlCatalog = [sqlOpCount]struct{ id, query string }{
 		          ARRAY(
 		            SELECT (SELECT names FROM tmap)[at.tag_id]
 		            FROM article_tags at WHERE at.article_id = a.id
-		            ORDER BY 1
 		          ) AS tags,
 		          (SELECT count(*) FROM favorites f WHERE f.article_id = a.id) AS base_favs,
 		          u.username, u.bio, u.image
